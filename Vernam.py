@@ -24,17 +24,26 @@ def Vernam(PlaintextBinaryArray,KeyBinaryArray):
     for i in range(len(PlaintextBinaryArray)):
         a=PlaintextBinaryArray[i]
         b=KeyBinaryArray[i]
-        EncryptedArray.append((format(int(a,2)^int(b,2),"b")).zfill(len(a))) #XOR the key and message then fills gaps to make all binary the same length
+        EncryptedArray.append((format(XOR(a,b))).zfill(len(a))) #XOR the key and message then fills gaps to make all binary the same length
     print("Encrypted Message:")
     print(EncryptedArray)
     VernamDecipher(EncryptedArray,KeyBinaryArray)
+    
+def XOR(Var1,Var2): #Modified version of pre-existing XOR breakdown from Binary Operations Repo. Trying to not use in built XOR function
+    NewVar="" 
+    for i in range(len(Var1)): #Breaking down the operation to not use AND or OR
+        if (int(Var1[i])==int(Var2[i])):
+            NewVar=NewVar+"0"
+        else:
+            NewVar=NewVar+"1"
+    return int(NewVar)
     
 def VernamDecipher(EncryptedArray,KeyBinaryArray):
     DecryptedArray=[]
     for i in range(len(EncryptedArray)):
         a=EncryptedArray[i]
         b=KeyBinaryArray[i]
-        DecryptedArray.append(int((format(int(a,2)^int(b,2),"b")).zfill(len(a)),2)) #XOR to get original binary back and convert to ASCII
+        DecryptedArray.append(int((format(XOR(a,b))).zfill(len(a)),2)) #XOR to get original binary back and convert to ASCII
     print("Decrypted Plaintext in ASCII:")
     print(DecryptedArray)
     Deconv(DecryptedArray)
